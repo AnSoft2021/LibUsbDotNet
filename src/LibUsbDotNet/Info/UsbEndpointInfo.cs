@@ -1,4 +1,4 @@
-// Copyright © 2006-2010 Travis Robinson. All rights reserved.
+// Copyright ï¿½ 2006-2010 Travis Robinson. All rights reserved.
 //
 // website: http://sourceforge.net/projects/libusbdotnet
 // e-mail:  libusbdotnet@gmail.com
@@ -21,6 +21,7 @@
 //
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace LibUsbDotNet.Info
 {
@@ -39,8 +40,9 @@ namespace LibUsbDotNet.Info
             value.RawDescriptors = new byte[descriptor.ExtraLength];
             if (descriptor.ExtraLength > 0)
             {
-                Span<byte> extra = new Span<byte>(descriptor.Extra, descriptor.ExtraLength);
-                extra.CopyTo(value.RawDescriptors);
+                // Span<byte> extra = new Span<byte>(descriptor.Extra, descriptor.ExtraLength);
+                // extra.CopyTo(value.RawDescriptors);
+                Marshal.Copy((IntPtr) descriptor.Extra, value.RawDescriptors, 0, descriptor.ExtraLength);
             }
 
             value.Interval = descriptor.Interval;
